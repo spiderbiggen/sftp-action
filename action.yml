@@ -1,0 +1,31 @@
+name: SFTP Action
+description: Automate deployment using SFTP
+author: "Stefan Breetveld"
+inputs:
+  host:
+    required: true
+    description: "ftp server"
+  username:
+    required: true
+    description: "ftp username"
+  password:
+    required: true
+    description: "ftp password"
+  port:
+    required: false
+    description: "Server port to connect to (read your web hosts docs), defaults to 22"
+  local_dir:
+    required: false
+    description: "Folder to upload from, must end with trailing slash /"
+  remote_dir:
+    required: false
+    description: "Path to upload to on the server. Must end with trailing slash /"
+  exclude:
+    required: false
+    description: "An array of glob patterns, these files will not be included in the publish/delete process"
+  log-level:
+    required: false
+    description: "How verbose should the information be - minimal, standard, or verbose"
+runs:
+  using: "node12"
+  main: "dist/index.js"

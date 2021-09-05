@@ -1,0 +1,22 @@
+name: SFTP Test
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  deploy:
+    name: Test locally
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v2
+
+      - name: 📂 Sync files
+        uses: ./
+        with:
+          host: ${{ secrets.ftp_host }}
+          username: ${{ secrets.ftp_username }}
+          password: ${{ secrets.ftp_password }}
+          local_dir: api/
+          remote_dir: /api/
