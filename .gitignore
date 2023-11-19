@@ -3,6 +3,5 @@ node_modules
 .vscode
 .idea
 .env
-.secrets
-dist/lib
-*.exe
+dist
+!dist/**/*.js
