@@ -27,5 +27,5 @@ inputs:
     required: false
     description: "How verbose should the information be - minimal, standard, or verbose"
 runs:
-  using: "node20"
-  main: "dist/index.js"
+  using: 'node20'
+  main: 'dist/index.js'
