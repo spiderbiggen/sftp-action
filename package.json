@@ -1,6 +1,6 @@
 {
     "name": "sftp-action",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "private": true,
     "description": "A Github Action to help deploy projects using SFTP",
     "main": "dist/index.js",
@@ -12,6 +12,6 @@
         "ssh2-sftp-client": "^7.2.3"
     },
     "devDependencies": {
-        "@vercel/ncc": "^0.30.0"
+        "@vercel/ncc": "^0.38.1"
     }
 }

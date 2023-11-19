@@ -10,7 +10,6 @@ async function run() {
 
   const localDirPath = core.getInput('local_dir') || '.';
   const remoteDir = core.getInput('remote_dir') || '/';
-  // const relativePath = resolve(localDirPath);
 
   const sftp = new Client();
   await sftp.connect({ host, port, username, password });
