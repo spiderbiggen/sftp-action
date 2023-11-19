@@ -2,7 +2,8 @@ name: SFTP Test
 
 on:
   push:
-    branches: [master]
+    branches:
+      - main
 
 jobs:
   deploy:
