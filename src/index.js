@@ -1,6 +1,4 @@
 const core = require('@actions/core');
-const Client = require('ssh2-sftp-client');
-
 
 async function run() {
   const username = core.getInput('username', { required: true, trimWhitespace: true });
@@ -11,12 +9,35 @@ async function run() {
   const localDirPath = core.getInput('local_dir') || '.';
   const remoteDir = core.getInput('remote_dir') || '/';
 
-  const sftp = new Client();
-  await sftp.connect({ host, port, username, password });
-  await sftp.uploadDir(localDirPath, remoteDir);
+  let sftp;
+  try {
+    // dynamic ESM import to support ssh2-sftp-client v12 while keeping CommonJS action
+    const mod = await import('ssh2-sftp-client');
+    const SftpClient = mod.default || mod;
+    const uploadDir = mod.uploadDir;
 
-  process.exit(0);
+    sftp = new SftpClient();
+    await sftp.connect({ host, port, username, password });
+
+    if (typeof uploadDir === 'function') {
+      await uploadDir(sftp, localDirPath, remoteDir);
+    } else if (typeof sftp.uploadDir === 'function') {
+      // fallback for older ssh2-sftp-client versions
+      await sftp.uploadDir(localDirPath, remoteDir);
+    } else {
+      throw new Error('uploadDir helper not found in ssh2-sftp-client module');
+    }
+  } catch (error) {
+    core.setFailed(error && error.message ? error.message : String(error));
+  } finally {
+    if (sftp) {
+      try {
+        await sftp.end();
+      } catch (_) {
+        // ignore
+      }
+    }
+  }
 }
 
-
-run().catch(error => core.setFailed(error.message));
+run();
